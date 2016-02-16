@@ -9,14 +9,15 @@ $(function() {
     this.name = name;
     this.imgSrc = "";
     this.clickCnt = 0;
-    Cat.list[this.id] = this;
   }
 
   Cat.list = [];
   Cat.totalClickCnt = 0;
 
   Cat.prototype.generateId = function() {
-    return Cat.list.length;
+    var id = Cat.list.length;
+    Cat.list[id] = this;
+    return id;
   };
 
   Cat.prototype.addClickCnt = function() {
@@ -63,18 +64,25 @@ $(function() {
   //View
   var view = {
     init: function() {
-      
-      view.render();
 
-      //set image click event
-      $("#catDiv .catImg").click(function(){
+      view.catLinkTemplate = $("#catLinkTemplate").html();
+
+      view.catLinksDiv = $("#catLinks");
+      view.catDiv = $("#catDiv");
+      view.catName = $(".name", view.catDiv);
+      view.catClickCnt = $(".clickCnt", view.catDiv);
+      view.catImg = $(".catImg", view.catDiv);
+      view.totalClickCnt = $("#totalClickCnt");
+
+      //set event
+      view.catImg.click(function(){
         var cat = octopus.getCatById($(this).data("id"));
-        $("#catDiv .clickCnt").html(cat.addClickCnt());
-        $("#totalClickCnt").html(octopus.getTotalClickCnt());
+        view.catClickCnt.html(cat.addClickCnt());
+        view.totalClickCnt.html(octopus.getTotalClickCnt());
       });
 
-      //init state
-      $("#catLinks a").first().click();
+
+      view.render();
     },
 
     render: function() {
@@ -82,27 +90,33 @@ $(function() {
       octopus.getAllCats().forEach(function(cat) {
         view.renderLink(cat);
       });
+      view.catLinks = view.catLinksDiv.children();
+      //init state
+      view.catLinks.first().click();
     }, 
 
     renderLink: function(cat) {
-      var link = view.makeTemplate("#catLinkTemplate");
+      var link = view.makeCatLinkTemplate();
       link.html(cat.name);
       link.click(function(){
         view.renderCat(cat);
+        var activeClass = "active";
+        view.catLinks.removeClass(activeClass);
+        $(this).addClass(activeClass);
       });
-      link.appendTo("#catLinks");
+      link.appendTo(view.catLinksDiv);
     },
 
     renderCat: function(cat) {
-      var catDom = $("#catDiv").data("id", cat.id);
-      $(".name", catDom).html(cat.name);
-      $(".clickCnt", catDom).html(cat.clickCnt);
-      $(".catImg", catDom).data("id", cat.id)
+      var catDom = view.catDiv.data("id", cat.id);
+      view.catName.html(cat.name);
+      view.catClickCnt.html(cat.clickCnt);
+      view.catImg.data("id", cat.id)
         .attr("src", cat.imgSrc);
     },
 
-    makeTemplate: function(id) {
-      return $($(id).html());
+    makeCatLinkTemplate: function(id) {
+      return $(view.catLinkTemplate);
     }
 
   };
