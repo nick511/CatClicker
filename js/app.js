@@ -21,7 +21,7 @@ Cat.prototype.create = function(){
 };
 
 Cat.prototype.addClickCnt = function(){
-	return this.clickCnt++;
+	return ++this.clickCnt;
 };
 
 var names = ["Cat1","Cat2","Cat3","Cat4","Cat5",];
