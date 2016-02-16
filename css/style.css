@@ -10,6 +10,7 @@
 #catDiv .catImgDiv {
   position: relative;
   display: inline-block;
+  cursor: pointer;
 }
 #catDiv .catImgDiv .heart { 
   position: absolute;
