@@ -8,13 +8,19 @@
     </head>
     <body>
 
+    <div id="catLinks"></div>
+
     <div id="catList"></div>
+    <hr>
+    Total Click Count: <span id="totalClickCnt">0</span>
 
 
-    <div id="catTemplate" class="catDiv" style="display:none">
-        <img src="" class="catImg" width="100" />
-        <span class="name"></span>: <span class="clickCnt"></span>
-    </div>
+    <script type="text/template" id="catTemplate">
+        <div class="catDiv">
+            <h1><span class="name"></span>: <span class="clickCnt"></span> clicks</h1>
+            <img src="" class="catImg" width="500" />
+        </div>
+    </script>
 
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
