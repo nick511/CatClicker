@@ -55,6 +55,12 @@ $(function() {
     return this.clickCnt;
   };
 
+  Cat.prototype.update = function(name, imgSrc, clickCnt) {
+    this.name = name;
+    this.imgSrc = imgSrc;
+    this.clickCnt = clickCnt;
+  };
+
 
   //MV*
   var octopus = {
@@ -86,10 +92,20 @@ $(function() {
       view.catLinksDiv = $("#catLinks");
       view.catDiv = $("#catDiv");
       view.catName = $(".name", view.catDiv);
-      view.catClickCnt = $(".clickCnt", view.catDiv);
       view.catImgDiv = $(".catImgDiv", view.catDiv);
       view.catImg = $(".catImgDiv .catImg", view.catDiv);
+      view.catClickCnt = $(".clickCnt", view.catDiv);
       view.heart = $(".catImgDiv .heart", view.catDiv);
+
+      view.btnEdit = $("#btnEdit");
+      view.editFormDiv = $("#editFormDiv");
+      view.editForm = $("#editForm");
+      view.formName = $("input[name=name]", view.editForm);
+      view.formImgSrc = $("input[name=imgSrc]", view.editForm);
+      view.formClickCnt = $("input[name=clickCnt]", view.editForm);
+      view.btnCancel = $("input#btnCancel", view.editForm);
+      view.formSubmit = $("input[type=submit]", view.editForm);
+      
       
       view.totalClickCnt = $("#totalClickCnt");
 
@@ -98,6 +114,22 @@ $(function() {
         var cat = octopus.getCatById($(this).data("id"));
         view.catClickCnt.html(cat.addClickCnt());
         view.totalClickCnt.html(octopus.getTotalClickCnt());
+      });
+
+      view.btnEdit.click(function(event){
+        view.editFormDiv.toggle();
+      });
+
+      view.btnCancel.click(function(event){
+        view.editFormDiv.hide();
+      });
+
+      view.formSubmit.click(function(event){
+        event.preventDefault();
+        var cat = octopus.getCatById(view.catImgDiv.data("id"));
+        cat.update(view.formName.val(), view.formImgSrc.val(), view.formClickCnt.val());
+        view.renderCat(cat);
+        view.editFormDiv.hide();
       });
 
       view.render();
@@ -131,6 +163,11 @@ $(function() {
       view.catClickCnt.html(cat.clickCnt);
       view.catImgDiv.data("id", cat.id);
       view.catImg.attr("src", cat.imgSrc);
+
+      //edit form
+      view.formName.val(cat.name);
+      view.formImgSrc.val(cat.imgSrc);
+      view.formClickCnt.val(cat.clickCnt);
     },
 
     makeCatLinkTemplate: function(id) {

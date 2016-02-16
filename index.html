@@ -12,6 +12,20 @@
 
     <div id="catDiv">
         <h1><span class="name"></span>: <span class="clickCnt"></span> clicks</h1>
+
+        <button id="btnEdit">Edit</button>
+        <div id="editFormDiv">
+            <form id="editForm">
+                Name: <input name="name" />
+                ImgSrc: <input name="imgSrc" />
+                ClickCnt: <input name="clickCnt" />
+
+                <input type="button" id="btnCancel" value="Cancel" />
+                <input type="submit" value="Save" />
+            </form>
+        </div>
+        <hr>
+
         <div class="catImgDiv">
             <img src="" class="catImg" width="500" />
             <div class="heart noselect">&hearts;</div>

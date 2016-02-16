@@ -29,6 +29,10 @@
   transform: translate(-50%, -50%) scale(1.5,1.5);
 }
 
+#editFormDiv{
+	display: none;
+}
+
 .noselect {
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none;   /* Chrome/Safari/Opera */
