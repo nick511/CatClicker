@@ -1,5 +1,7 @@
 
+
 $(function() {
+  "use strict";
 
   //Model
   function Cat(name){
@@ -7,14 +9,14 @@ $(function() {
     this.name = name;
     this.imgSrc = "";
     this.clickCnt = 0;
-    Cat.list.push(this);
+    Cat.list[this.id] = this;
   }
 
   Cat.list = [];
   Cat.totalClickCnt = 0;
 
   Cat.prototype.generateId = function() {
-    return Cat.list.length + 1;
+    return Cat.list.length;
   };
 
   Cat.prototype.addClickCnt = function() {
@@ -44,8 +46,16 @@ $(function() {
       view.init();
     },
 
+    getCatById: function(id) {
+      return Cat.list[id];
+    },
+
     getAllCats: function() {
       return Cat.list;
+    },
+
+    getTotalClickCnt: function() {
+      return Cat.totalClickCnt;
     },
   };
 
@@ -53,47 +63,48 @@ $(function() {
   //View
   var view = {
     init: function() {
+      
       view.render();
+
+      //set image click event
+      $("#catDiv .catImg").click(function(){
+        var cat = octopus.getCatById($(this).data("id"));
+        $("#catDiv .clickCnt").html(cat.addClickCnt());
+        $("#totalClickCnt").html(octopus.getTotalClickCnt());
+      });
+
+      //init state
       $("#catLinks a").first().click();
     },
 
     render: function() {
+      //render all links
       octopus.getAllCats().forEach(function(cat) {
-        view.renderCat(cat);
         view.renderLink(cat);
       });
     }, 
 
-    renderCat: function(cat) {
-      var catId = view.getCatDomId(cat);
+    renderLink: function(cat) {
+      var link = view.makeTemplate("#catLinkTemplate");
+      link.html(cat.name);
+      link.click(function(){
+        view.renderCat(cat);
+      });
+      link.appendTo("#catLinks");
+    },
 
-      var catDom = $($("#catTemplate").html());
-      catDom.attr("id", catId);
+    renderCat: function(cat) {
+      var catDom = $("#catDiv").data("id", cat.id);
       $(".name", catDom).html(cat.name);
       $(".clickCnt", catDom).html(cat.clickCnt);
-      $(".catImg", catDom).attr("src", cat.imgSrc);
-      $(".catImg", catDom).click(function(){
-        $(".clickCnt", catDom).html(cat.addClickCnt());
-        $("#totalClickCnt").html(Cat.totalClickCnt);
-      });
-      catDom.appendTo("#catList");
+      $(".catImg", catDom).data("id", cat.id)
+        .attr("src", cat.imgSrc);
     },
 
-    renderLink: function(cat) {
-      var catId = view.getCatDomId(cat);
-
-      var link = $("<a />").html(cat.name);
-        link.data("id", catId);
-        link.click(function(){
-          $(".catDiv").hide();
-          $("#" + $(this).data("id")).show();
-        });
-        link.appendTo("#catLinks");
-    },
-
-    getCatDomId: function(cat) {
-      return "cat_" + cat.id;
+    makeTemplate: function(id) {
+      return $($(id).html());
     }
+
   };
 
   octopus.init();
