@@ -71,7 +71,9 @@ $(function() {
       view.catDiv = $("#catDiv");
       view.catName = $(".name", view.catDiv);
       view.catClickCnt = $(".clickCnt", view.catDiv);
-      view.catImg = $(".catImg", view.catDiv);
+      view.catImg = $(".catImgDiv .catImg", view.catDiv);
+      view.heart = $(".catImgDiv .heart", view.catDiv);
+      
       view.totalClickCnt = $("#totalClickCnt");
 
       //set event
@@ -80,7 +82,6 @@ $(function() {
         view.catClickCnt.html(cat.addClickCnt());
         view.totalClickCnt.html(octopus.getTotalClickCnt());
       });
-
 
       view.render();
     },

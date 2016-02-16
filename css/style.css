@@ -6,3 +6,34 @@
 #catLinks a.active{
 	font-weight: bold;
 }
+
+#catDiv .catImgDiv {
+  position: relative;
+  display: inline-block;
+}
+#catDiv .catImgDiv .heart { 
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1,1);
+  font-size: 200px;
+  color: #F00;
+  transition: all 2s;
+  opacity:0;
+}
+
+#catDiv .catImgDiv:active .heart {
+  transition: all 0s;
+  opacity:1;
+  transform: translate(-50%, -50%) scale(1.5,1.5);
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none;   /* Chrome/Safari/Opera */
+  -khtml-user-select: none;    /* Konqueror */
+  -moz-user-select: none;      /* Firefox */
+  -ms-user-select: none;       /* IE/Edge */
+  user-select: none;           /* non-prefixed version, currently
+                                  not supported by any browser */
+}
