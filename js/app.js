@@ -136,25 +136,25 @@ $(function() {
     },
 
     render: function() {
-      //render all links
+      view.renderLink();
+    }, 
+
+    renderLink: function() {
       octopus.getAllCats().forEach(function(cat) {
-        view.renderLink(cat);
+        var link = view.makeCatLinkTemplate();
+        link.html(cat.name);
+        link.click(function(){
+          view.renderCat(cat);
+          var activeClass = "active";
+          view.catLinks.removeClass(activeClass);
+          $(this).addClass(activeClass);
+        });
+        link.appendTo(view.catLinksDiv);
       });
+
       view.catLinks = view.catLinksDiv.children();
       //init state
       view.catLinks.first().click();
-    }, 
-
-    renderLink: function(cat) {
-      var link = view.makeCatLinkTemplate();
-      link.html(cat.name);
-      link.click(function(){
-        view.renderCat(cat);
-        var activeClass = "active";
-        view.catLinks.removeClass(activeClass);
-        $(this).addClass(activeClass);
-      });
-      link.appendTo(view.catLinksDiv);
     },
 
     renderCat: function(cat) {
